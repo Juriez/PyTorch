@@ -17,10 +17,11 @@ class Model(nn.Module):
        self.fc2 = nn.Linear(h1,h2) #flow connection between hidden layer 1 & 2
        self.final = nn.Linear(h2,output_features) #flow connection between hidden layer2 & output features
 
-    def moveForward(self,x):  
-        x = F.relu(self.fc1(x))  #relu: rectified linear unit
-        x = F.relu(self.fc2(x))
-        x = self.final(x)
+    def moveForward(self,x): 
+        #relu: rectified linear unit, F.relu introduces non-linearity and ensures that negative values are set to 0 
+        x = F.relu(self.fc1(x)) #input vlaue passed to the h1 through fc1 
+        x = F.relu(self.fc2(x)) #the output from h1 passed to the h2 through fc2
+        x = self.final(x) #processed data from the h2 passed to the output layer through final
         return x
     
 #pick a manual seed for randomization
@@ -109,6 +110,62 @@ for i in range(epochs):
     #lets plot the graph
 plt.plot(range(epochs), losses)
 plt.ylabel("loss/error")
-plt.xlabel("Epoch")
+plt.xlabel("epoch")
 plt.title("Training Loss Over Epochs")
 plt.show()
+
+#evaluate Model on test data set(validation basically)
+with torch.no_grad():
+    Y_evaluation = model.moveForward(X_test) #x_test are features from our test set & y_evaluation will be the predictions
+    loss = criterion(Y_evaluation, Y_test)
+
+#print(loss)
+
+correct = 0
+with torch.no_grad():
+    for i, data in enumerate(X_test):
+        Y_value = model.moveForward(data)
+        m = Y_value.argmax().item()
+
+        if Y_test[i] == 0:
+            x = 'setosa'
+        elif Y_test[i] == 1:
+            x = 'versicolor'
+        elif Y_test[i] == 2:
+            x = 'virginica'
+
+         #identify correct or not
+        if m == Y_test[i]:
+            correct +=1
+        
+        #m
+        if m == 0:
+            m = 'setosa'
+        elif m == 1:
+            m = 'versicolor'
+        elif m == 2:
+            m = 'virginica'
+        
+        #will show the type of flowers
+        print(f'{i+1}.) {str(Y_value)} \t {x} \t {m}')
+
+       
+    print(f'Got {correct} correct!')
+
+
+#evaluate new data on the network
+
+new_iris = torch.tensor([5.9,3.0,5.1,1.8]) #4 values of X
+with torch.no_grad():
+    print(model.moveForward(new_iris))
+    
+
+#save the NN model
+torch.save(model.state_dict(), 'my_iris_model')
+
+#load the saved model
+new_model = Model()
+print(new_model.load_state_dict(torch.load('my_iris_model')))
+
+#make sure it loaded correctly
+print(new_model.eval())

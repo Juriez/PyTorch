@@ -32,7 +32,3 @@ my_tensor3 = torch.arange(20)
 my_tensor4 = my_tensor3.reshape(10,2)
 print(my_tensor4)
 print("slices: ", my_tensor4[:,1]) #show 2nd column
-
-my_tensor4 = my_tensor3.reshape(4,5)
-print("My tensor 4: ", my_tensor4)
-print("3rd & 5th column's elements: ", my_tensor4[:,:,2,:,:])
