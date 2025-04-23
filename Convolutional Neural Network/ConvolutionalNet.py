@@ -6,7 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import ssl
 import time
-from CnnExampleUsingMnistImage import train_loader, test_loader
+from CnnExampleUsingMnistImage import train_loader, test_loader, test_data
 
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
@@ -115,6 +115,7 @@ plt.plot(train_losses, label = "Training loss")
 plt.plot(test_losses, label = "Test loss")
 plt.title("Loss at epochs")
 plt.legend()
+plt.show()
 
 
 
@@ -124,3 +125,14 @@ plt.plot([t/600 for t in train_correct], label = "Training accuracy")
 plt.plot([t/100 for t in test_correct], label = "Testing accuracy")
 plt.title("Accuracy at the end of each epochs")
 plt.legend()
+plt.show()
+
+test_load_everything = DataLoader(test_data, batch_size= 10000, shuffle=False)
+with torch.no_grad():
+    correct = 0
+    for X_test, Y_test in test_load_everything:
+        Y_value = model.moveForward(X_test)
+        predicted = torch.max(Y_value,1)[1]
+        correct += (predicted == Y_test).sum()
+
+    print(correct.item())

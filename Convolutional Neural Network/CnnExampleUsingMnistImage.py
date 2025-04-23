@@ -71,4 +71,4 @@ print(x.shape) #we didn't set padding so we lose 2 pixels around the outside of 
 #2nd pooling layer
 x = F.max_pool2d(x,2,2)
 print("after 2nd pooling:\n")
-print(x.shape)
+print(x.shape) # in output 5 = 11/2
