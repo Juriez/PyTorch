@@ -14,13 +14,14 @@ class Generator(nn.Module):
             nn.Conv2d(128, 128, kernel_size=3, padding=1),  # Apply 2D convolution with 128 filters, kernel size 3x3, padding 1.
             nn.BatchNorm2d(128, momentum=0.78),  # Apply Batch Normalization to stabilize training and improve convergence.
 
-            #Apply similar opperations for better performance
+            #Apply similar operations for better performance
             nn.ReLU(),  
             nn.Upsample(scale_factor=2),  
             nn.Conv2d(128, 64, kernel_size=3, padding=1),  # Apply 2D convolution reducing the filters from 128 to 64.
             nn.BatchNorm2d(64, momentum=0.78), 
             nn.ReLU(), 
             nn.Conv2d(64, 3, kernel_size=3, padding=1),  # Final convolution to produce 3-channel output (RGB image).
+
             nn.Tanh(),  # Apply Tanh activation to scale output pixel values to the range [-1, 1].
         )
 

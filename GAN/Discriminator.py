@@ -1,4 +1,4 @@
-import torch.nn as nn  # Import PyTorch's neural network module for defining layers and components.
+import torch.nn as nn  
 
 # Define the discriminator class that inherits from nn.Module
 class Discriminator(nn.Module):
@@ -29,7 +29,7 @@ class Discriminator(nn.Module):
             nn.Dropout(0.25),  # Dropout layer (25% dropout again).
 
 
-            #Apply similar opperations for better performance
+            #Apply similar operations for better performance
             nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1),  
             nn.BatchNorm2d(128, momentum=0.82), 
             # - Stabilizes learning by normalizing outputs.
