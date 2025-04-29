@@ -1,7 +1,5 @@
 import torch
 import torchvision
-import torch.nn.functional as F
-import matplotlib.pyplot as plt
 import ssl
 
 from torch.utils.data import DataLoader
